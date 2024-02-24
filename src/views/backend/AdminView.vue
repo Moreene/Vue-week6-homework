@@ -79,11 +79,19 @@ export default {
                         icon: "success",
                         timer: 2000
                     });
-                    setTimeout(() => {
-                        document.cookie = "myToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                        this.$router.push('/adminLogin');
-                    }, 2000);
-                }
+                    axios.post(`${VITE_URL}/logout`)
+                        .then(res => {
+                            document.cookie = `myToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+                            this.$router.push('/');
+                        })
+                        .catch(err => {
+                            this.$swal({
+                                icon: "error",
+                                title: err.response.data.message,
+                                showConfirmButton: true,
+                            });
+                        });
+                };
             });
         },
     },
